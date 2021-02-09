@@ -1,0 +1,77 @@
+{% extends "Services_events/base.html" %} {% block title %}Event{% endblock %}
+{% block content %}
+
+<div class="loader"></div>
+<div class="container my-3">
+    <div class="row p-3">
+        <div class="col-md-3 p-0 p-md-3">
+                {% if is_owner == False and is_already_booked == False %}
+                <p class="lead">You can book this event by clicking Book this Event button below :</p>
+                {% elif is_owner == False and is_already_booked == True %}
+                <p class="text-info lead">You already have booked this Event</p>
+                {% endif %}
+                <div class="book_know_section border shadow-sm">
+                <div class="lead">
+                    DATE AND PLACE
+                    <hr>
+                </div>
+                {% for event in event_details %}
+                <div class="booking-content">
+                    <h6>&nbsp;<i class="fa fa-calendar" style="font-size: 130%;"></i>&nbsp;&nbsp; {{event.event_date}}<h6>
+                    <h6>&nbsp;<i class="fa fa-location-arrow" style="font-size: 130%;"></i>&nbsp;&nbsp;&nbsp; {{event.event_city}}<h6>
+                </div>
+                    {% if is_owner == False and is_already_booked == False %}
+                    <hr>
+                    <a href="{% url 'book_event' event.id %}" class="btn btn-primary btn-block">Book this Event</a>
+                    {% elif is_owner == False and is_already_booked == True and user.is_authenticated %}
+                    <hr>
+                    <a href="{% url 'my_bookings' %}" class="btn btn-info btn-block">Show my bookings</a>
+                    {% endif %}
+                <!-- if user is admin -->
+                {% if user.is_authenticated %}
+                    {% if role == "Full_Controll" and is_owner == True %}
+                    <hr>
+                    <p class="text-muted">You can edit or delete your event</p>
+                    <a href="{% url 'edit_my_event' event.id %}" class="btn btn-warning btn-block">Edit Event</a>
+                    <a href="javascript:void(0);" data-del-url="{% url 'delete_my_event' event.id %}" class="btn btn-danger btn-block delete-my-event-btn">Delete Event</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-9 shadow-sm border rounded p-0">
+            <div class="row">
+                <div class="col-md">
+                    <div class="d-flex flex-md-row flex-column border-bottom">
+                        <img class="img-fluid rounded-top-left mx-auto" src="{% if event.image_url|length > 0 %}{{event.image_url}} {%else%}{% load static %}{% static 'Services_events/img/not_available_img.jpg' %}{%endif%}" style="height: 270px;">
+                        <div class="p-3 rounded-right w-100 overflow-auto" style="background-color: rgb(240,240,240);">
+                            <div class="text-left mt-3">
+                                <p class="h5 mb-0">{{ event.event_date|date:"d" }}</p>
+                                <p class="h5">{{ event.event_date|date:"N" }}</p>
+                            </div>
+                            <div class="h4">{{event.title }}</div>
+                            <p>by <a href="{% url 'profile' event.user.id %}">{{event.user.username}}</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row m-0">
+                <div class="col-md p-3">
+                    <p class="h5">Description</p>
+                    <p>{{event.description}}</p>
+                </div>
+                <div class="col-md p-3">
+                    <p class="h5">Date and Time</p>
+                    <p>{{event.event_date}}, {{event.event_start_time}} –
+                        {{event.event_finish_time}}</p>
+                    <br>
+                    <p class="h5">Location</p>
+                    <p>{{event.event_address}}, {{event.event_city}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

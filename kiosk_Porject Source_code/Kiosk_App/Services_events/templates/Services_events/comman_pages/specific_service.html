@@ -1,0 +1,88 @@
+{% extends "Services_events/base.html" %}{% block title %}Service{% endblock %}
+{% block content %}
+
+{% load custom_tags %}
+<div class="loader"></div>
+<div class="container my-3 h-100">
+    <div class="row p-2">
+        <div class="col-md-9">
+            <div class="row m-0">
+                <div class="col-md rounded shadow-sm border p-3">
+                    {% for service in service_details %}
+                    <p class="h2">{{service.name}}</p>
+                    <p>{{service.service_city}}</p>
+                    <div class="my-2 border text-center">
+                        <img class="img-fluid rounded" src="{% if service.image_url|length > 0 %}{{service.image_url}}{% else %}https://icoconvert.com/images/noimage2.png{% endif %}" />
+                    </div>
+                    <div class="w-100 border-bottom">
+                        <p>Posted<span class="float-right">{{service.created_at}}</span> </p>
+                    </div>
+                    <div class="my-2">
+                        <p class="h5">Description</p>
+                        <p>{{service.description}}</p>
+                        <blockquote class="blockquote">
+                            <footer class="blockquote-footer">By <a href="{% url 'profile' service.user.id %}" target="_blank"> {{service.user}} </a></footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="row m-0 mt-2 mt-md-0">
+                <div class="col rounded border shadow-sm p-3">
+                    <p>Service by <a href="{% url 'profile' service.user.id %}">{{service.user.username}} </a></p>
+                        {% if is_owner == False and is_already_booked == False %}
+                        <hr>
+                        <p class="text-muted">Book this service by clicking below</p>
+                        <hr>
+                        <a href="{% url 'book_service' service.id %}" class="btn btn-primary btn-block">Book this service</a>
+                        {% elif is_owner == False and is_already_booked == True and user.is_authenticated %}
+                        <hr>
+                        <p class="text-info">You already have booked this service</p>
+                        <a href="{% url 'my_bookings' %}" class="btn btn-info btn-block">Show my bookings</a>
+                        {% endif %}
+
+                    
+                    <!-- if user is admin -->
+                    {% if user.is_authenticated %}
+                        {% if role == "Full_Controll" and is_owner == True %}
+                        <hr>
+                        <p class="text-muted">You can edit or delete your service</p>
+                        <a href="{% url 'edit_my_service' service.id %}" class="btn btn-warning btn-block">Edit this service</a>
+                        <a href="javascript:void(0);" data-del-url="{% url 'delete_my_service' service.id %}" class="btn btn-danger btn-block delete-my-service-btn">Delete this service</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="mx-2">
+    <div class="row p-2 mb-3">
+        <p class="h5 w-100 px-4">All services by {{service.user.username }}</p>    
+        <div class="col-md-12 p-3">
+            <div class="d-flex flex-wrap">
+                    <!-- get user service by custom tags -->
+                    {% for service_list in custom_tag|get_user_services:service.user %}
+                <div class="service-box rounded shadow-sm border p-3 m-1 mx-md-2 d-flex flex-column">
+                    <div class="img-block">
+                        <img class="img-fluid rounded" src="{% if service_list.image_url|length > 0  %}{{service_list.image_url}}{% else %}{% load static %}{% static 'Services_events/img/not_available_img.jpg' %}{% endif %}"/>
+                    </div>
+                    <div class="mt-auto">
+                    <a href="{% url 'specific_service' service_list.id %}">
+                        <p class="h5 text-primary my-3">{{service_list.name|truncatechars:30 }}</p>
+                    </a>
+                        <p>In {{service_list.service_city}}</p>
+                        <p class="text-muted">Added on {{service_list.created_at|date:'d M Y'}}</p>
+                    </div>
+                </div>
+                    <!-- end of service_list custom loop -->
+                    {% empty %}
+                    <p>Currently this user have no more Services</p>
+                    {% endfor %}
+                    <!-- end of service for look -->
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

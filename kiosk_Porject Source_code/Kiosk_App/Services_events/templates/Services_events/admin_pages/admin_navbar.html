@@ -1,0 +1,47 @@
+<nav class="navbar header-top fixed-top navbar-expand-lg navbar-dark bg-dark">
+    <a  href="{% url 'home' %}" class="navbar-brand">Fask-Kiosk</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav animate side-nav">
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}" title="Home"><i class="fa fa-home"></i> Home <i class="fa fa-home shortmenu animate" style="font-size: 25px;"></i></a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'events' %}" title="Events"><i class="fa fa-calendar"></i> Events <i class="fa fa-calendar shortmenu animate" style="font-size: 25px;"></i></a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'services' %}" title="Services"><i class="fa fa-list"></i> Services <i class="fa fa-list shortmenu animate" style="font-size: 25px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'my_bookings' %}" title="My bookings"><i class="fa fa-check"></i> My bookings <i class="fa fa-check shortmenu animate" style="font-size: 25px;"></i></a>
+            </li>
+            <!-- Admin data -->
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'booking_requests' %}" title="Booking Requests"><i class="fa fa-check-square-o"></i> Booking Requests <i class="fa fa-check-square-o shortmenu animate" style="font-size: 25px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'my_services' %}" title="My Services"><i class="fa fa-tasks"></i> My Services <i class="fa fa-tasks shortmenu animate" style="font-size: 25px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'my_events' %}" title="My Events"><i class="fa fa-calendar-check-o"></i> My Events <i class="fa fa-calendar-check-o shortmenu animate" style="font-size: 25px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'add_service' %}" title="Add Service"><i class="fa fa-plus-square"></i> Add Service <i class="fa fa-plus-square shortmenu animate" style="font-size: 25px;"></i></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'add_event' %}" title="Add Event"><i class="fa fa-calendar-plus-o"></i> Add Event <i class="fa fa-calendar-plus-o shortmenu animate mb-5" style="font-size: 25px;"></i></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-md-auto d-md-flex">
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile' request.user.id %}"><i class="fa fa-user"></i> Profile</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,60 @@
+{% extends "Services_events/base.html" %} {% block title %}Event Booking Confirmation{% endblock %}
+{% block content %}
+
+<div class="loader"></div>
+<div class="container my-3 h-100">
+    <div class="row p-2 mx-md-5">
+        <div class="col-md p-0">
+            <p class="h5 font-weight-bold">Event Booking Confirmation</p>
+            <div class="row mx-0 my-3">
+                <div class="col p-0 border rounded shadow-sm">
+                    <p class="h6 bg-dark text-white p-3 m-0 border">Confirm Event Details</p>
+                    <div class="row m-0">
+                        <div class="col-md-6 p-0">
+                            <div class="my-4">
+                                {% for event in event_details%}
+                                <p class="h6 px-3 m-0">Event Title :</p>
+                                <p class="h6 m-0 px-3 text-muted">{{ event.title|truncatechars:40 }}</p>
+                            </div>
+                            <div class="my-4">
+                                <p class="h6 px-3 m-0">Event Start Time :</p>
+                                <p class="h6 px-3 text-muted">{{ event.event_start_time }}</p>
+                            </div>
+                            <div class="my-4">
+                                <p class="h6 px-3 m-0">Event Address :</p>
+                                <p class="h6 px-3 text-muted">{{ event.event_address }}, {{ event.event_city }}</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6 p-0">
+                            <div class="my-4">
+                                <p class="h6 px-3 m-0">Event Date :</p>
+                                <p class="h6 px-3 text-muted">Event on {{ event.event_date }}</p>
+                            </div>
+                            <div class="my-4">
+                                <p class="h6 px-3 m-0">Event Finish Time :</p>
+                                <p class="h6 px-3 text-muted">{{ event.event_finish_time }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if role == "Read_Write" %}
+                    <p class="h6 bg-dark text-white p-3 m-0 border">Add Or Confirm Your Details</p>
+                    <div class="p-3">
+                        {% csrf_token %} {% load crispy_forms_tags %} {{ student_form|crispy }}
+                        <button id="student_form_btn" class="btn btn-primary" disabled data-url="{% url 'ajax_change_student_data' %}">Save My Details</button>
+                    </div>
+                    {% endif %}
+                    <hr>
+                    <div class="p-3">
+                        {% for event in event_details %}
+                        <a href="{% url 'confirm_event_booking' event.id %}" class="btn btn-primary btn-block">Confirm and Book</a>
+                        {% endfor %}
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

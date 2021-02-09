@@ -1,0 +1,90 @@
+{% extends "Services_events/base.html" %} {% block title %}My Booking Requests{% endblock %}
+{% block content %}
+
+
+<div class="loader"></div>
+<div class="container my-3 h-100">
+    {% if user.profile.role.name == "Admin" %}
+    <div class="row p-2">
+        <div class="col-md p-0">
+            <p class="h2">All Booking Requests</p>
+            <p class="h6 text-muted">All yours booking requests are listed below :</p>
+            <br>
+                <div class="table-responsive">
+                    <table class="table table-sm shadow-sm table-striped">
+                        <caption>
+                            Services Requests
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th>Request From</th>
+                                <th>Service</th>
+                                <th>Booking Made On</th>
+                                <th>Current Status</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        {% for services_request in services_requests %}
+                        <tr id="{{services_request.service.id}}-{{services_request.user.id}}">
+                            <td><a class="btn btn-sm p-0 td-a" href="{% url 'profile' services_request.user.id %}"><img class="img-thumbnail" src="{% if services_request.user.profile.image|length > 0 %}{{services_request.user.profile.image}} {%else%}https://i.stack.imgur.com/34AD2.jpg{%endif%}" width="50" alt="user profile image"> {{services_request.user.username}} </a></td>
+                            <td><a class="td-a" href="{% url 'specific_service' services_request.service.id %}"><i class="fa fa-external-link"></i> {{ services_request.service.name|truncatechars:20 }}</a></td>
+                            <td>{{ services_request.booked_at }}</td>
+                            <td><span class="badge {% if services_request.status.status == 'Pending' %}badge-warning {% elif services_request.status.status == 'Confirmed' %}badge-success {%else%}badge-danger {% endif %}p-1">{{ services_request.status.status }}</span></td>
+                            {% if services_request.status.status == 'Confirmed' %}
+                            <td class="text-center"><a data-url="{% url 'ajax_cancel_service_booking' service_id=services_request.service.id requester_id=services_request.user.id %}" data-tr="{{services_request.service.id}}-{{services_request.user.id}}" href="javascript:void(0);" class="btn btn-danger btn-sm cancel_service_btn"><span class="fa fa-remove"></span> Cancel</a></td>
+                            {% else %}
+                            <td class="text-center"><a href="javascript:void(0);" class='btn btn-info btn-sm mb-1 mb-md-0 confirm_service_btn' data-url="{% url 'ajax_confirm_service_booking' service_id=services_request.service.id requester_id=services_request.user.id %}" data-tr="{{services_request.service.id}}-{{services_request.user.id}}"><span class="fa fa-check"></span> Confirm</a> <a data-url="{% url 'ajax_cancel_service_booking' service_id=services_request.service.id requester_id=services_request.user.id %}" data-tr="{{services_request.service.id}}-{{services_request.user.id}}" href="javascript:void(0);" class="btn btn-danger btn-sm cancel_service_btn"><span class="fa fa-remove"></span> Cancel</a></td>
+                            {% endif %}
+                            {% empty %}
+                            <td colspan="5" class="text-center">Do not received service requests yet</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            <!-- Events request table -->
+            <br>
+                <div class="table-responsive">
+                    <table class="table table-sm shadow-sm table-striped">
+                        <caption>
+                            Events Requests
+                        </caption>
+                        <thead>
+                            <tr>
+                                <th>Request From</th>
+                                <th>Event</th>
+                                <th>Booking Made On</th>
+                                <th>Current Status</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                            {% for events_request in events_requests %}
+                        <tr id="{{events_request.event.id}}-{{events_request.user.id}}">
+                            <td><a class="btn btn-sm p-0 td-a" href="{% url 'profile' events_request.user.id %}" target="_blank"><img class="img-thumbnail" src="{% if events_request.user.profile.image|length > 0 %}{{events_request.user.profile.image}} {%else%}https://i.stack.imgur.com/34AD2.jpg{%endif%}" width="50" alt="user profile image"> {{events_request.user.username}} </a></td>
+                            <td><a class="td-a" href="{% url 'specific_event' events_request.event.id %}" target="_blank"><i class="fa fa-external-link"></i> {{ events_request.event.title|truncatechars:20 }}</a></td>
+                            <td>{{ events_request.booked_at }}</td>
+                            <td><span class="badge {% if events_request.status.status == 'Pending' %}badge-warning {% elif events_request.status.status == 'Confirmed' %}badge-success {%else%}badge-danger {% endif %}p-1">{{ events_request.status.status }}</span></td>
+                            {% if events_request.status.status == 'Confirmed' %}
+                            <td class="text-center"><a data-url="{% url 'ajax_cancel_event_booking' event_id=events_request.event.id requester_id=events_request.user.id %}" data-tr="{{events_request.event.id}}-{{events_request.user.id}}" href="javascript:void(0);" class="btn btn-danger btn-sm cancel_event_btn"><span class="fa fa-remove"></span> Cancel</a></td>
+                            {% else %}
+                            <td class="text-center"><a href="javascript:void(0);" class='btn btn-info btn-sm mb-1 mb-md-0 confirm_event_btn' data-url="{% url 'ajax_confirm_event_booking' event_id=events_request.event.id requester_id=events_request.user.id %}" data-tr="{{events_request.event.id}}-{{events_request.user.id}}"><span class="fa fa-check"></span> Confirm</a> <a data-url="{% url 'ajax_cancel_event_booking' event_id=events_request.event.id requester_id=events_request.user.id %}" data-tr="{{events_request.event.id}}-{{events_request.user.id}}" href="javascript:void(0);" class="btn btn-danger btn-sm cancel_event_btn"><span class="fa fa-remove"></span> Cancel</a></td>
+                            {% endif %}
+                            <!-- <td><span class="badge {% if events_request.status.status == 'Pending' %}badge-warning {% elif events_request.status.status == 'Confirmed' %}badge-success{%else%}badge-danger{% endif %}p-1">{{ events_request.status.status }}</span></td>
+                            <td class="text-center"><a class='btn btn-info btn-sm mb-1 mb-md-0' href="javascript:void(0);"><span class="fa fa-check"></span> Confirm</a> <a href="javascript:void(0);" class="btn btn-danger btn-sm"><span class="fa fa-remove"></span> Cancel</a></td> -->
+                            {% empty %}
+                            <td colspan="5" class="text-center">Do not received event requests yet</td>
+                            {% endfor %}
+                        </tr>
+                    </table>
+                </div>
+                <!-- event table end -->
+        </div>
+    </div>
+    {% else %}
+    <div class="row p-4">
+        <div class="col-md">
+            <p class="h2 text-center">Only Admin can view all his Services</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

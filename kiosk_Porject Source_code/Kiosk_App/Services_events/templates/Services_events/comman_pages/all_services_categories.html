@@ -1,0 +1,67 @@
+{% extends "Services_events/base.html" %} {% block title %}Fast-Kiosk Services{% endblock %}
+{% block content %}
+{% load custom_tags %}
+
+<!-- comman pages/all_services -->
+<div class="loader"></div>
+<div class="container my-3 h-100">
+    <div class="row p-3">
+        <div class="col-md">            
+            <div class="row">
+                <div class="nav shadow-sm h-100 flex-column nav-pills nav-justified col-md-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active cat-a font-weight-bold border-bottom border-top" id="v-pills-home-tab" data-toggle="pill" href="#v-pills-home" role="tab" aria-controls="v-pills-home" aria-selected="True">CATEGORIES</a>
+                    {% for category in categories %}
+                    <a class="nav-link cat-a border-bottom" id="custom-{{ category.id }}-tab" data-toggle="pill" href="#custom-{{ category.id }}-link" role="tab" aria-controls="custom-{{ category.id }}-link" aria-selected="False">{{ category.name }} <span class="badge badge-light float-right">{{ custom_tag|services_numb_by_cat:category.id }}</span></a>
+                    {% endfor %}
+                </div>
+                <div class="tab-content col-md-9 p-0 pl-md-3" id="v-pills-tabContent">
+                    <div class="tab-pane fade show active h-100 px-2" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                        <h3>Welcome to Fast-Kiosk's Services</h3>
+                        <p class="lead">All the Services are listed here explore by category on the left. You also can book any service by clicking on the service.</p>
+                    </div>
+                    {% for category in categories %}
+                    <div class="tab-pane fade border-top" id="custom-{{ category.id }}-link" role="tabpanel" aria-labelledby="custom-{{ category.id }}-tab">
+                        <!-- list of the services -->
+                        {% for service in custom_tag|get_services_by_cat_id:category.id %}
+                        <div class="custom-card-block shadow-sm">
+                            <a href="{% url 'specific_service' service.id %}">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img class="img-fluid rounded"  style="width:100%; max-height: 140px !important" src="{% if service.image_url|length > 0 %}{{ service.image_url }} {% else %}{% load static %}{% static 'Services_events/img/not_available_img.jpg' %}{% endif %}">
+                                </div>
+                                <div class="col-md-7 mt-2 mt-md-0 d-flex flex-column">
+                                    <p class="h5 mb-1 text-dark">{{ service.name|truncatechars:60 }}</p>
+                                    <p class="h6"> {{ service.description|truncatechars:120 }}</p>
+                                    <small class="text-muted mt-auto mb-2">Catergory : {{ service.category }}</small>
+                                </div>
+                                <div class="col-md-2 d-flex flex-column">
+                                    <small>Published on {{ service.created_at|date:"d M Y" }}</small><br>
+                                    <small class="text-muted mt-auto mb-2">by {{ service.user.username }}</small>
+                                </div>
+                            </div>
+                            </a>
+                        </div>
+                        {% empty %}
+                            <p class="lead mt-2">No Service available of this category!!!</p>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!-- <div class="box-container">
+                {% for category in categories %}
+                <a href="{{ category.id }}" class="text-decoration-none text-dark">
+                <div class="card bg-light mb-3" style="min-width: 18rem;">
+                    <div class="card-header"><strong>{{ category.name }}</strong></div>
+                    <div class="card-body">
+                        <p class="card-text">{{ category.description }}</p>
+                    </div>
+                    <div class="well"><span class="badge badge-dark">{{ custom_tag|services_numb_by_cat:category.id }} Services</span> </div>
+                </div>
+                </a>
+                {% endfor %}
+            </div> -->
+        </div>
+    </div>
+</div>
+{%endblock%}

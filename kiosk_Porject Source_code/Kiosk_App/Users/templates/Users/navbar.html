@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <a class="navbar-brand px-2" href="{% url 'login' %}">Fast-Kiosk</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarText"
+    aria-controls="navbarText"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav"></ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'login' %}">Login</a>
+      </li>
+      <span class="navbar-text mx-1">
+        Or
+      </span>
+      <li class="nav-item">
+        <a class="nav-link text-white" href="{% url 'signup_student' %}"
+          >Signup</a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -1,0 +1,65 @@
+{% extends "Services_events/base.html" %} {% block title %}Booked Service Info{% endblock %}
+{% block content %}
+<div class="loader"></div>
+<div class="container-fluid my-3 h-100">
+    <div class="row p-2">
+        <div class="col-md border shadow-sm p-0">
+            <div class="bg-dark text-white shadow-sm p-2 mb-2">
+                <p class="h3">Booking Details</p>
+                <p class="h6">Your's booked service's information</p>
+            </div>
+            <div class="row p-2 text-muted">
+                {% for service_booking_detail in service_booking_details %}
+                <div class="col-md">
+                    <p class="h6"><span class="font-weight-bold">Service : </span>{{ service_booking_detail.service.name|truncatechars:35 }}</p>
+                    <p class="h6"><span class="font-weight-bold">Categoty Name :</span> {{ service_booking_detail.service.category.name|truncatechars:35 }}</p>
+                </div>
+                <div class="col-md">
+                    <p class="h6"><span class="font-weight-bold"> Location :</span> {{ service_booking_detail.service.service_city }}</p>
+                </div>
+                <div class="col-md">
+                    <p class="h6"><span class="font-weight-bold"> Service Created On :</span> {{ service_booking_detail.service.created_at }}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row p-2 text-muted">
+                <div class="col-md">
+                    <p class="h6"><span class="font-weight-bold">Booking Number :</span> {{ service_booking_detail.id }}</p>
+                    <p class="h6"><span class="font-weight-bold">Booked By :</span> <a href="{% url 'profile' service_booking_detail.user.id %}">{{ service_booking_detail.user.username }}</a></p>
+                </div>
+                <div class="col-md">
+                    <p class="h6"><span class="font-weight-bold">Booked On : </span> {{ service_booking_detail.booked_at }} </p>
+                    <p class="h6 text-info"><span class="font-weight-bold text-secondary">Approver Name : </span>{%if  service_booking_detail.service_approver|length > 0 %} <a href="{% url 'profile' service_booking_detail.service_approver.id %}" target="_blank">{{ service_booking_detail.service_approver }} </a>  {% else %} Not Approved Yet {% endif %}</p>
+                </div>
+                <div class="col-md">
+                    <p class="h6 text-info"><span class="font-weight-bold text-secondary">Booking Satus : </span> {{ service_booking_detail.status.status }}</p>
+                </div>
+            </div>
+            <hr>
+            <!-- model for cancel booking confirmation -->
+            <div class="modal fade confirm-cancel-model" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                <div class="modal-content p-3">
+                    <p class="h4 border-bottom pb-2">Cancel Booking ???</p>
+                    <p class="h6 mb-3">Are you sure you want to cancel this booking ???</p>
+                    <div class="modal-footer p-1">
+                        <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Close</button>
+                        <a id="delete_service_booking_btn" data-url="{% url 'ajax_delete_service_booking' service_booking_detail.id %}" class="btn btn-sm btn-danger text-white">Yes Cancel</a>
+                    </div>                    
+                </div>
+                </div>
+            </div>
+            <!-- end of model -->
+            <div class="row p-2">
+                <div class="col-md my-2">
+                    <a href="{% url 'specific_service' service_booking_detail.service.id %}" class="btn btn-sm btn-primary text-white mb-1 mb-sm-0">Show This Service</a>
+                    {% csrf_token %}
+                    <a class="btn btn-sm btn-danger text-white mb-1 mb-sm-0" data-toggle="modal" data-target=".confirm-cancel-model" >Cancel Booking</a>
+                </div>
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

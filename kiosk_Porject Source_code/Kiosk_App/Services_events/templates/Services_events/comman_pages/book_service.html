@@ -1,0 +1,56 @@
+{% extends "Services_events/base.html" %} {% block title %}Service Booking Confirmation{% endblock %}
+{% block content %}
+<div class="loader"></div>
+<div class="container my-3 h-100">
+    <div class="row p-2 mx-md-5">
+        <div class="col-md p-0">
+            <p class="h5 font-weight-bold">Service Booking Confirmation</p>
+            <div class="row mx-0 my-3">
+                <div class="col p-0 border rounded shadow-sm">
+                    <p class="h6 bg-dark text-white p-3 m-0 border">Confirm Service Details</p>
+                    <div class="row m-0">
+                        <div class="col-md-6 p-0">
+                            <div class="my-4">
+                                {% for service in service_details%}
+                                <p class="h6 px-3 m-0">Service Name :</p>
+                                <p class="h6 m-0 px-3 text-muted">{{ service.description|truncatechars:40 }}</p>
+                            </div>
+                            <div class="my-4">
+                                <p class="h6 px-3 m-0">Service Available in :</p>
+                                <p class="h6 px-3 text-muted">{{ service.service_city }}</p>
+                            </div>
+                            
+                        </div>
+                        <div class="col-md-6 p-0">
+                            <div class="my-4">
+                                <p class="h6 px-3 m-0">Service Category :</p>
+                                <p class="h6 px-3 text-muted">{{ service.category }}</p>
+                            </div>
+                            <div class="my-4">
+                                <p class="h6 px-3 m-0">Service Provice :</p>
+                                <p class="h6 px-3 text-muted">{{ service.user }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% if role == "Read_Write" %}
+                    <p class="h6 bg-dark text-white p-3 m-0 border">Add Or Confirm Your Details</p>
+                    <div class="p-3">
+                        {% csrf_token %} {% load crispy_forms_tags %} {{ student_form|crispy }}
+                        <button id="student_form_btn" class="btn btn-primary" disabled data-url="{% url 'ajax_change_student_data' %}">Save My Details</button>
+                    </div>
+                    {% endif %}
+                    <hr>
+                    <div class="p-3">
+                        {% for service in service_details %}
+                        <a href="{% url 'confirm_service_booking' service.id %}" class="btn btn-primary btn-block">Confirm and Book</a>
+                        {% endfor %}
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

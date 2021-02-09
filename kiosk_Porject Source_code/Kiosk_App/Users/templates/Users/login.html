@@ -1,0 +1,35 @@
+{% extends "Users/base.html" %} {% block title %}Fast-Kiosk Login{% endblock %}
+{% block content %}
+<div class="loader"></div>
+<div class="container my-2">
+  <div class="row pb-5">
+    <div class="col-md-12 text-center mx-auto">
+      <h1 class="display-4">Welcome to Fast-Kiosk</h1>
+    </div>
+    <div class="col-md-5 mx-auto">
+      <p class="text-center">
+        Enter you username and password below to login.
+      </p>
+      <div class="shadow my-3 p-3 rounded">
+        <form method="post">
+          {% csrf_token %} {% load crispy_forms_tags %} {{ form|crispy }}
+          <button class="btn btn btn-primary btn-block mb-1" type="submit">
+            Log in
+          </button>
+        </form>
+      </div>
+      <div class="text-center font-weight-light">
+        <p>
+          If you don't have Fast-kiosk account then
+          <a href="{% url 'signup_student' %}"> Signup here</a>.
+        </p>
+        <p>Or</p>
+        <a href="{% url 'guest' %}" class="btn btn-primary px-4" type="submit">
+          Enter as a guest
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

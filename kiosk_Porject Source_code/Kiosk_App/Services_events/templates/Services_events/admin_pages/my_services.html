@@ -1,0 +1,46 @@
+{% extends "Services_events/base.html" %} {% block title %}My Services{% endblock %}
+{% block content %}
+<div class="loader"></div>
+<div class="container my-3 h-100">
+    {% if user.profile.role.name == "Admin" %}
+    <div class="row p-2">
+        <div class="col-md p-0">
+            <p class="h2">My Services</p>
+            <p class="h6 text-muted">All yours Services are listed below :</p>
+            <hr>
+            {% for service in user_services %}
+            <div class="custom-card-block shadow-sm">
+                <a href="{% url 'specific_service' service.id %}">
+                <div class="row">
+                    <div class="col-md-3">
+                        <img class="img-fluid rounded"  style="width:100%; max-height: 140px !important" src="{% if service.image_url|length > 0 %}{{ service.image_url }} {% else %}{% load static %}{% static 'Services_events/img/not_available_img.jpg' %}{% endif %}">
+                    </div>
+                    <div class="col-md-7 mt-2 mt-md-0 d-flex flex-column">
+                        <p class="h5 mb-1 text-dark">{{ service.name|truncatechars:60 }}</p>
+                        <p class="h6"> {{ service.description|truncatechars:240 }}</p>
+                        <small class="text-muted mt-auto mb-3">Catergory : {{ service.category }}</small>
+                    </div>
+                    <div class="col-md-2">
+                        <object class="d-flex flex-column">
+                        <small>Published on {{ service.created_at|date:"d M Y" }}</small><br>
+                        <a href="{% url 'edit_my_service' service.id %}" class="edit-btn btn btn-sm btn-default mt-2 border"><i class="fa fa-edit"></i> Edit</a>
+                        <a href="javascript:void(0);" data-del-url="{% url 'delete_my_service' service.id %}" class="delete-btn btn btn-sm btn-default my-2 border delete-my-service-btn"><i class="fa fa-trash"> Delete</i></a>
+                    </object>
+                    </div>
+                </div>
+                </a>
+            </div>
+            {%empty%}
+            <h3 class="text-center">You have not uploaded any service yet</h3>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="row p-4">
+        <div class="col-md">
+            <p class="h2 text-center">Only Admin can view all his Services</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

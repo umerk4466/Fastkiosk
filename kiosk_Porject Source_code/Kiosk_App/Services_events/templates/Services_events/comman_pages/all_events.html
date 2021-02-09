@@ -1,0 +1,70 @@
+{% extends "Services_events/base.html" %} {% block title %}Fast-Kiosk Events{% endblock %}
+{% block content %}
+
+<div class="loader"></div>
+<div class="container my-3">
+    <div class="row p-2">
+        <div class="col-md">
+            <p class="h3 text-center mb-0">Welcome to Fast-Kiosk's events</p>
+            <p class="lead text-center small">All the upcomming events are listed below</p>
+            <hr>
+            <div class="box-container">
+                {% for event in events %}
+                <div class="card">
+                    <img src="{% if event.image_url|length > 0 %}{{event.image_url}} {%else%}{% load static %}{% static 'Services_events/img/not_available_img.jpg' %}{%endif%}" class="card-img-top" />
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{event.title}}</h5>
+                        <p class="card-text">
+                            {{event.description}}
+                        </p>
+                        <div class="tags mt-auto">
+                            <span class="badge badge-light">{{event.event_date}}</span>
+                            <span class="badge badge-primary">{{event.event_city}}</span>
+                        </div>
+                        <a href="{% url 'specific_event' event.id %}" role="button" class="btn btn-outline-dark btn-block btn-sm mt-auto">View Event <i class="fa fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <hr>
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-between">
+                <p id="ticketmaster-heaiding" class="lead m-0">Search Events Form "Ticketmaster"</p>
+                <form id="event-search-form" class="form-inline my-2 my-lg-0">
+                    <input id="f_elem_city" class="form-control form-control-sm my-2 mr-sm-2" type="text" placeholder="Enter City" aria-label="City" required>
+                    <button class="btn btn-sm btn-outline-dark my-2 mr-sm-2 mr-2" type="submit">Search</button>
+                </form>
+            </div>
+            <hr>
+            <!-- third party events goes here --> 
+            <div id="third-party-events">
+                <!-- <div class="media">
+                    <h1 class="mb-0 mr-2 text-primary font-weight-normal">04</h1>
+                        <div>
+                            <p class="font-weight-bold mb-0 text-dark">Feb</p>
+                            <p class="mb-0">2018</p>
+                        </div>
+                    <div class="media-body ml-4">                            
+                        <p class="text-dark font-weight-bold mb-0"><a href="#" class="text-dark">Lorem ipsum dolor sit amit</a></p>
+                        <p class="mb-0">9.30 PM</p>
+                    </div>
+                </div>
+                <hr> -->
+            </div>
+            <!-- div for loading button -->
+            <div class="text-center">
+                <a href="javascript:void(0)" id="load-more-event" data-current-page="0" class="btn btn-sm btn-outline-dark load-more-btn d-none">Load More Events <i class="fa fa fa-angle-down"></i></a>
+                <span class="float-right">
+                    <button onclick='window.scrollTo({top: 0, behavior: "smooth"});' id="go-top-btn" class="btn btn-sm btn-outline-dark load-more-btn d-none"><i class="fa fa fa-angle-up"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jquery for autocomplete function -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" type="text/javascript"></script>
+<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.ui/1.10.3/themes/flick/jquery-ui.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>	
+<!-- custom js -->
+<script type="text/javascript" src="{% static 'Services_events/scripts/all_events.js' %}"></script> 
+{% endblock %}
+

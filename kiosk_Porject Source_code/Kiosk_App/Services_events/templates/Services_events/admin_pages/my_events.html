@@ -1,0 +1,50 @@
+{% extends "Services_events/base.html" %} {% block title %}My Events{% endblock %}
+{% block content %}
+<div class="loader"></div>
+<div class="container my-3 h-100">
+    {% if user.profile.role.name == "Admin" %}
+    <div class="row p-2">
+        <div class="col-md p-0">
+            <p class="h2">My Events</p>
+            <p class="h6 text-muted">All yours Events are listed below :</p>
+            <hr>
+                {% for event in user_events %}
+                <ul class="list-unstyled">
+                    <a href="{% url 'specific_event' event.id %}" class="media mb-3 shadow-sm p-2 list-group-item-action">
+                        <div class="date-block rounded mr-3">
+                        <p class="h4 month">{{ event.event_date|date:"N" }}</p>
+                        <p class="h5 day">{{ event.event_date|date:"d" }}</p>
+                        </div>
+                        <div class="media-body">
+                            <div class="row">
+                                <div class="col-md-10 d-flex flex-column">
+                                    <p class="h5 mb-1 text-dark">{{ event.title }}</p>
+                                    <p class="h6">{{ event.description|truncatechars:280 }}</p>
+                                    <small class="text-muted mt-auto mb-2">{{ event.event_city }}</small>
+                                </div>
+                                <div class="col-md-2">
+                                    <object class="d-flex flex-column">
+                                        <small>Added on {{ event.created_at|date:"d M Y" }}</small><br>
+                                        <a href="{% url 'edit_my_event' event.id %}" class="edit-btn btn btn-sm btn-default mt-2 border"><i class="fa fa-edit"></i> Edit</a>
+                                        <br>
+                                        <a href="javascript:void(0);" data-del-url="{% url 'delete_my_event' event.id %}" class="delete-btn btn btn-sm btn-default my-2 border delete-my-event-btn"><i class="fa fa-trash"> Delete</i></a>
+                                    </object>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </ul>
+            {%empty%}
+            <h3 class="text-center">You have not uploaded any event yet</h3>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="row p-4">
+        <div class="col-md">
+            <p class="h2 text-center">Only Admin can view all his Events</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

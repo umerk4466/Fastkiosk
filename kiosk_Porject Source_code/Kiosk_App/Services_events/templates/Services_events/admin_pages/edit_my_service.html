@@ -1,0 +1,24 @@
+{% extends "Services_events/base.html" %} {% block title %}Edit Service{% endblock %}
+{% block content %}
+<div class="loader"></div>
+<div class="container my-3 h-100">
+    {% if user.profile.role.name == "Admin" %}
+    <div class="row p-2">
+        <div class="col-md p-0">
+            <p class="h2">Edit My Service</p>
+            <p class="h6 text-muted">All the field of the service are below</p>
+            <div class="my-3 shadow-sm border rounded p-3">
+                <form class="p-3" method="post">
+                    {% csrf_token %}
+                    {% load crispy_forms_tags %}
+                    {{ service_form|crispy }}
+                    <hr class="mt-4 mx-2">
+                    <button class="btn btn-primary px-5" type="submit">Save Changes</button>
+                    <a href="javascript:history.back()" class="btn btn-dark">Go Back</a>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends "Services_events/base.html" %} {% block title %}Booked Event Info{% endblock %}
+{% block content %}
+<div class="loader"></div>
+<div class="container-fluid my-3 h-100">
+    <div class="row p-2">
+        <div class="col-md border shadow-sm p-0">
+            <div class="bg-dark text-white shadow-sm p-2 mb-2">
+                <p class="h3">Booking Details</p>
+                <p class="h6">Your's booked event information</p>
+            </div>
+            <div class="row p-2 text-muted">
+                {%for event_booking_detail in event_booking_details %}
+                <div class="col-md">
+                    <p class="h6"><span class="font-weight-bold">Event : </span>{{ event_booking_detail.event.title|truncatechars:35 }}</span></p>
+                    <p class="h6"><span class="font-weight-bold">Starts : </span>{{ event_booking_detail.event.event_start_time }}</p>
+                </div>
+                <div class="col-md">
+                    <p class="h6"><span class="font-weight-bold">Location : </span>{{ event_booking_detail.event.event_address }}, {{ event_booking_detail.event.event_city }}</p>
+                    <p class="h6"><span class="font-weight-bold">Finishes : </span>{{ event_booking_detail.event.event_finish_time }}</p>
+                </div>
+                <div class="col-md">
+                    <p class="h6"><span class="font-weight-bold">Date : </span>{{ event_booking_detail.event.event_date }}</p>
+                </div>
+            </div>
+            <hr>
+            <div class="row p-2 text-muted">
+                <div class="col-md">
+                    <p class="h6"><span class="font-weight-bold">Booking Number : </span>{{ event_booking_detail.id }}</p>
+                    <p class="h6"><span class="font-weight-bold">Booked By : </span><a href="{% url 'profile' event_booking_detail.user.id %}" >{{ event_booking_detail.user.username }} </a> </p>
+                </div>
+                <div class="col-md">
+                    <p class="h6"><span class="font-weight-bold">Booked On : </span>{{ event_booking_detail.booked_at }} </p>
+                    <p class="h6 text-info"><span class="font-weight-bold text-secondary">Approver Name : </span>{%if  event_booking_detail.event_approver|length > 0 %} <a href="{% url 'profile' event_booking_detail.event_approver.id %}" >{{ event_booking_detail.event_approver }} </a> {% else %} Not Approved Yet  {% endif %}</p>
+                </div>
+                <div class="col-md">
+                    <p class="h6 text-info"><span class="font-weight-bold text-secondary">Booking Satus : </span>{{ event_booking_detail.status.status }}</p>
+                </div>
+            </div>
+            <hr>
+            <!-- model for cancel booking confirmation -->
+            <div class="modal fade confirm-cancel-model" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                <div class="modal-content p-3">
+                    <p class="h4 border-bottom pb-2">Cancel Booking ???</p>
+                    <p class="h6 mb-3">Are you sure you want to cancel this booking ???</p>
+                    <div class="modal-footer p-1">
+                        <button type="button" class="btn btn-sm btn-primary" data-dismiss="modal">Close</button>
+                        <a id="delete_event_booking_btn" data-url="{% url 'ajax_delete_event_booking' event_booking_detail.id %}" class="btn btn-sm btn-danger text-white">Yes Cancel</a>
+                    </div>                    
+                </div>
+                </div>
+            </div>
+            <!-- end of model -->
+            <div class="row p-2">
+                <div class="col-md my-2">
+                    <a href="{% url 'specific_event' event_booking_detail.event.id %}" class="btn btn-sm btn-primary text-white mb-1 mb-sm-0">Show This Event</a>
+                    {% csrf_token %}
+                    <a class="btn btn-sm btn-danger text-white mb-1 mb-sm-0" data-toggle="modal" data-target=".confirm-cancel-model" >Cancel Booking</a>
+                </div>
+                
+                    
+                    {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

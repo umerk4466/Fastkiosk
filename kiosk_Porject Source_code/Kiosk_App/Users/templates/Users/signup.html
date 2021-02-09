@@ -1,0 +1,63 @@
+{% extends "Users/base.html" %} {% load crispy_forms_tags %} {% block title %}Admin Signup {% endblock %}
+{% block content %}
+<div class="loader"></div>
+<div class="container my-2">
+  <div class="row pb-5">
+    <!-- left column-->
+    <div class="col-md">
+      <div class="my-3 p-3">
+        <h1 class="display-4">Fast-Kiosk For Admins</h1>
+        <p class="font-weight-light">
+          Admin is able to have Full Control of the Fast-Kiosk, see below what
+          admin can do with this account.
+        </p>
+        <i class="fa fa-calendar font-weight-light my-1"> Able to add Events</i>
+        <br />
+        <i class="fa fa-edit font-weight-light my-1">
+          Able to edit his Events</i
+        >
+        <br />
+        <i class="fa fa-tasks font-weight-light my-1"> Able to Add Services</i>
+        <br />
+        <i class="fa fa-pencil font-weight-light my-1">
+          Able to edit his Service</i
+        >
+        <br />
+        <i class="fa fa-check font-weight-light my-1">
+          Able to Confirm Event/Service Bookings</i
+        >
+        <br />
+        <i class="fa fa-graduation-cap font-weight-light my-1">
+          Able to hepl Students</i
+        >
+        <br />
+        <i class="fa fa-plus font-weight-light my-1">
+          And able to do alot more!!!</i
+        >
+        <br />
+        <br />
+        <p class="font-weight-light">
+          So, to be able to do all this make you account by the given form,
+          Please fill all the required field.
+        </p>
+        <p class="font-weight-bold">
+          If you are Student and want to access all the event and services then
+          click below
+        </p>
+        <a href="{% url 'signup_student' %}" class="btn btn-primary px-4">
+          Signup as Student
+        </a>
+      </div>
+    </div>
+    <!-- right column-->
+    <div class="col-md">
+      <div class="shadow my-3 p-3 rounded">
+        <form method="post">
+          {% csrf_token %} {{ form|crispy }}
+          <button class="btn btn-primary" type="submit">Signup as Admin</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

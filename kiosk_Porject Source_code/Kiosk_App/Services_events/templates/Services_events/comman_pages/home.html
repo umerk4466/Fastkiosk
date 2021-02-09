@@ -1,0 +1,93 @@
+{% extends "Services_events/base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block content %} 
+<div class="loader"></div>
+<div class="container my-3 h-100"">
+    <div class="row p-2 justify-content-center h-100">
+        <div class="col-md text-center mx-auto my-auto">
+            <p class="h3">Welcome {{ user.username}} to Fast-Kiosk</p>
+            <p class="h6">All functionalities from Fast-Kiosk are listed below</p>
+            <hr>
+            <div class="box-container">
+                <!-- event box -->
+                <a href="{% url 'events' %}" class="a-box">
+                    <div class="box bg-primary rounded">
+                        <div class="box-content">
+                            <i class="fa fa-calendar fa-2x" ></i><br><strong>Events</strong>
+                        </div>
+                    </div>
+                </a>
+                <!-- service box -->
+                <a href="{% url 'services' %}" class="a-box">
+                    <div class="box bg-success rounded">
+                        <div class="box-content">
+                            <i class="fa fa-list fa-2x"></i><br><strong>Services</strong>
+                        </div>
+                    </div>
+                </a>
+                <!-- my bookings -->
+                <a href="{% url 'my_bookings' %}" class="a-box">
+                    <div class="box bg-dark rounded">
+                        <div class="box-content">
+                            <i class="fa fa-check fa-2x"></i><br><strong>My Bookings</strong>
+                        </div>
+                    </div>
+                </a>
+                <!-- my profile -->
+                <a href="{% url 'profile' request.user.id %}" class="a-box">
+                    <div class="box bg-danger rounded">
+                        <div class="box-content">
+                            <i class="fa fa-user fa-2x"></i><br><strong>My Profile</strong>
+                        </div>
+                    </div>
+                </a>
+                {% if user.is_authenticated and user.profile.role.name == "Admin" %}
+                <!-- admin boxes -->
+                <!-- my services -->
+                <a href="{% url 'my_services' %}" class="a-box">
+                    <div class="box rounded" style="background-color:sienna;">
+                        <div class="box-content">
+                            <i class="fa fa-tasks fa-2x"></i><br><strong>My Service</strong>
+                        </div>
+                    </div>
+                </a>
+                <!-- add services -->
+                <a href="{% url 'add_service' %}" class="a-box">
+                    <div class="box bg-secondary rounded">
+                        <div class="box-content">
+                            <i class="fa fa-plus-square-o fa-2x"></i><br><strong>Add Service</strong>
+                        </div>
+                    </div>
+                </a>
+                <!-- my event -->
+                <a href="{% url 'my_events' %}" class="a-box" >
+                    <div class="box rounded" style="background-color: blueviolet;">
+                        <div class="box-content">
+                            <i class="fa fa-calendar-check-o fa-2x"></i><br><strong>My Event</strong>
+                        </div>
+                    </div>
+                </a>
+                <!-- add event -->
+                <a href="{% url 'add_event' %}" class="a-box">
+                    <div class="box bg-info rounded">
+                        <div class="box-content">
+                            <i class="fa fa-calendar-plus-o fa-2x"></i><br><strong>Add Event</strong>
+                        </div>
+                    </div>
+                </a>
+                <!-- Booking Requests -->
+                <a href="{% url 'booking_requests' %}" class="a-box">
+                        <div class="box rounded" style="background-color:goldenrod;">
+                            <div class="box-content">
+                                <i class="fa fa-check-square-o fa-2x"></i><br><strong>Booking Requests</strong>
+                            </div>
+                        </div>
+                    </a>
+                {% endif %}
+            </div>
+            <hr>
+        </div>
+    </div>
+</div>
+{%endblock%}

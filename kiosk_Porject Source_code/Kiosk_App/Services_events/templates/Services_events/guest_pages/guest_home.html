@@ -1,0 +1,28 @@
+{% extends "Services_events/base.html" %} {% block title %}Guest Home{% endblock %}
+{% block content %}
+<div class="loader"></div>
+<div class="container my-3" style="height: 80vh;">
+    <div class="row p-2 h-100">
+        <div class="col-md text-center mx-auto my-auto">
+            <h3>Explore events or services in Fast-Kiosk</h3>
+            <p class="lead">Choose either events or services below</p>
+            <div class="box-container">
+                <a href="{% url 'events' %}" class="a-box">
+                    <div class="box bg-primary rounded">
+                        <div class="box-content">
+                            <i class="fa fa-calendar fa-2x" ></i><br><strong>Events</strong>
+                        </div>
+                    </div>
+                </a>
+                <a href="{% url 'services' %}" class="a-box">
+                    <div class="box bg-success rounded">
+                        <div class="box-content">
+                            <i class="fa fa-list fa-2x"></i><br><strong>Services</strong>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}

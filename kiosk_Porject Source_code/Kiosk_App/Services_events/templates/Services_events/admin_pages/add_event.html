@@ -1,0 +1,26 @@
+{% extends "Services_events/base.html" %}{% block title %}Add Event{% endblock %}
+{% block content %}
+
+
+<div class="container my-3 h-100">
+    <div class="row p-2">
+        <div class="col-md p-0">
+            {% if user.profile.role.name == "Admin" %}
+            <p class="h2">Add New Event</p>
+            <p class="h6 text-muted">Please fill the below form to add event</p>
+            <div class="my-3 shadow-sm border rounded p-3">
+                <form class="p-3" method="post">
+                    {% csrf_token %}
+                    {% load crispy_forms_tags %}
+                    {{ add_event_form|crispy }}
+                    <hr class="mt-4 mx-2">
+                    <button class="btn btn-primary px-5" type="submit">Add Event</button>
+                </form>
+            </div>
+            {% else %}
+                <p class="h2 text-center">Only Admin can add Event</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

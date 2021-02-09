@@ -1,0 +1,81 @@
+{% extends "Services_events/base.html" %} {% block title %}My Bookings{% endblock %}
+{% block content %}
+<div class="loader"></div>
+<div class="container my-3 h-100">
+    <div class="row p-2">
+        <div class="col-md p-0">
+            <p class="h2">My Bookings</p>
+            <p class="h6 text-muted">All yours bookings are listed below :</p>
+            <br>
+            <!-- Events Table -->
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered m-0 shadow-sm">
+                <caption>
+                    My Events Bookings
+                </caption>
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Event</th>
+                        <th scope="col">Booked On</th>
+                        <th scope="col">Event Approver</th>
+                        <th scope="col">Booking Status</th>
+                        <th scope="col">More Info</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for event_booking in event_bookings %}
+                    <tr>
+                        <th scope="row"><a href="{% url 'specific_event' event_booking.event.id %}">{{ event_booking.event.title|truncatechars:20 }}</a></th>
+                        <td>{{ event_booking.booked_at }}</td>
+                        <td class="not-approved-yet">{% if event_booking.event_approver == "None" or "null" %}Not Approved yet{% else %} {{ event_booking.event_approver }} {% endif %}</td>
+                        <td class="status">{{ event_booking.status.status }}</td>
+                        <td class="w-25"><a href="{% url 'specific_event_booking' event_booking.event.id %}" class="btn btn-info text-white btn-sm btn-block">Booking Detail</a></td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-secondary text-center">You have not booked any Events yet</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+            </div>
+            <br>
+            <!-- Service Table -->
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered m-0 shadow-sm">
+                    <caption>
+                        My Service Bookings
+                    </caption>
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">Service</th>
+                            <th scope="col">Service Category</th>
+                            <th scope="col">Booked On</th>
+                            <th scope="col">Service Approver</th>
+                            <th scope="col">Booking Status</th>
+                            <th scope="col">More Info</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for service_booking in service_bookings %}
+                        <tr>
+                            <th scope="row"><a href="{% url 'specific_service' service_booking.service.id %}">{{ service_booking.service.name|truncatechars:20 }}</a></th>
+                            <td>{{ service_booking.service.category.name|truncatechars:20  }}</td>
+                            <td>{{ service_booking.booked_at }}</td>
+                            <td class="not-approved-yet">{% if service_booking.service_approver == "None" or "null" %}Not Approved yet{% else %} {{ service_booking.service_approver }} {% endif %}</td>
+                            <td class="status">{{ service_booking.status.status }}</td>
+                            <td class="w-25"><a href="{% url 'specific_service_booking' service_booking.service.id %}" class="btn btn-info text-white btn-sm btn-block">Booking Detail</a></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-secondary text-center">You have not booked any Services yet</td>
+                        </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

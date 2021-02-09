@@ -1,0 +1,19 @@
+{% extends "Users/base.html" %} {% block title %}Fast-Kiosk Logout{% endblock %}{% block content %}
+<div class="loader"></div>
+<div class="container my-2">
+    <div class="row pb-5">
+        <div class="col-md-12 text-center mx-auto">
+            <h1 class="display-4">Loggout Succesfully</h1>
+            <p class="text-center">
+                You are succesfully logged out
+            </p>
+            <a href="{% url 'login' %}" class="btn btn-primary"> Login Again</a>
+            <div class="my-3">Or</div>
+            <a href="{% url 'guest' %}" class="btn btn-sm btn-primary px-4" type="submit">
+                Enter as a guest
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

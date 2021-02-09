@@ -1,0 +1,57 @@
+{% extends "Services_events/base.html" %}{% block title %}Add Service{% endblock %}
+{% block content %}
+
+
+<div class="container my-3 h-100">
+    {% if user.profile.role.name == "Admin" %}
+    <div class="row p-2">
+        <div class="col-md p-0">
+            <p class="h2">Add New Service</p>
+            <p class="h6 text-muted">Please fill the below form to add service</p>
+            <div class="my-3 shadow-sm border rounded p-3">
+                <form id="add_service_form" class="p-3" method="post">
+                    {% csrf_token %}
+                    {% load crispy_forms_tags %}
+                    {{add_service_form|crispy }}
+                    <hr class="mt-4 mx-2">
+                    <button class="btn btn-primary px-5" type="submit" name="add_service_form">Add Service</button>
+                </form>
+            </div>
+        </div>
+        <!-- Modal for addig category -->
+        <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#add_category_model">Add New Category</button> -->
+    <div class="modal fade" id="add_category_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Add New Category</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <form  method="post">
+                {% csrf_token %}
+                {% load crispy_forms_tags %}
+                {{add_category_form|crispy }}
+                <div class="float-right my-2">
+                    <button class="btn btn-primary" type="submit" name="add_category_form">Add Category</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    </div>
+    {% else %}
+    <div class="row p-4">
+        <div class="col-md">
+        <p class="h2 text-center">Only Admin can add Service or Category</p>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

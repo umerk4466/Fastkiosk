@@ -1,0 +1,81 @@
+{% extends "Services_events/base.html" %}{% block title %}My Profile{% endblock %}
+{% block content %}
+
+<div class="loader"></div>
+<div class="container my-3 h-100">
+    <div class="row p-2">
+        <div class="col-md p-md-4 shadow-sm border rounded">
+            <div class="text-center mt-2">
+                {% for user in user_details %}
+                <img src="{% if user.profile.image|length > 0 %} {{ user.profile.image }} {% else %} https://i.stack.imgur.com/34AD2.jpg {% endif %}" width="170" height="170" class="rounded-circle"/>
+                <h3 class="my-2">{{ user.username }}</h3>
+                <span class="badge badge-dark m-1 p-2">{{ user.profile.role.name }}</span>
+                <hr>
+                <p>
+                    {% if user.first_name|length > 0 %}
+                    <i class="fa fa-user">  {{ user.first_name }} {{ user.last_name }} </i> <br>
+                    {% endif %}
+                    {% if user.profile.date_of_birth != None %}
+                    <i class="fa fa-gift">  {{ user.profile.date_of_birth }} </i> <br>
+                    {% endif %}
+                    <i class="fa fa-map-marker"> {% if user.profile.city|length > 0 %} {{ user.profile.country }} {{ user.profile.city }} {% else %} City not provided {% endif %}</i>
+                    <br />
+                    <i class="fa fa-envelope"> {% if user.email|length > 0 %} {{ user.email }} {% else %} Email not provided  {% endif %}</i>
+                    <br />
+                    <i class="fa fa-globe"></i>  {% if user.profile.website|length > 0 %} <a href="{{ user.profile.website }}" target="_blank">{{ user.profile.website }}</a> {% else %}  Website not provided {% endif %}
+                    <br />
+                    {% if user.profile.role.name == 'Student' %}
+                    {% for student in student_details %}
+                    <span class="badge badge-light m-md-2 p-2">Roll Number : {{ student.student_roll_no }}</span> 
+                    <span class="badge badge-light m-md-2 p-2">Course : {{ student.course_name }}</span> 
+                    <span class="badge badge-light m-md-2 p-2">Course Finishes : {{ student.cource_finish }}</span>
+                    {% endfor %}
+                    {% endif %}
+                </p>
+            </div>
+            <hr>
+            <p class="text-left"><strong>Bio: </strong><br>
+                {% if user.profile.about_me|length > 0 %} {{ user.profile.about_me }} {% else %} Not Information provided Yet  {% endif %}
+            </p>
+            {% if is_owner == True %}
+            <hr>
+            <div class="my-3">
+                <button class="btn btn-primary" data-toggle="modal" data-target="#profile_edit_model"><i class="fa fa-edit"> Edit Profile </i></button>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if is_owner == True %}
+    <!-- Modal for changing user details -->
+    <div class="modal fade" id="profile_edit_model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title">Edit My Profile</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+            <form method="post">
+                {% csrf_token %}
+                {% load crispy_forms_tags %}
+                {{ user_form|crispy }}
+                {{ profile_form|crispy }}
+                {{ student_form|crispy }}
+                <div class="float-right my-2">
+                    <button class="btn btn-primary" type="submit">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+            </div>
+        </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
